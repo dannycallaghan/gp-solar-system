@@ -1,330 +1,151 @@
-// /*
-// // Mercury
-//     config = {
-//         size: 30,
-//         colour: [90, 90, 90, darkenColourBy],
-//         startPositionInSky: 45,
-//         rotateClockwise: true,
-//         rotateSpeed: 4,
-//         orbit: true,
-//         orbitSpeed: 4,
-//         orbitDistanceFromCentre: 300
-//     };
-//     mercury = new CelestialBody(config);
-
-//     // Venus
-//     config = {
-//         size: 40,
-//         colour: [255, 165, 0, darkenColourBy],
-//         startPositionInSky: 90,
-//         rotateClockwise: false,
-//         rotateSpeed: 5,
-//         orbit: true,
-//         orbitSpeed: 5,
-//         orbitDistanceFromCentre: 400
-//     };
-//     venus = new CelestialBody(config);
-
-//     // Earth
-//     config = {
-//         size: 80,
-//         colour: [0, 0, 255, darkenColourBy],
-//         startPositionInSky: 45,
-//         rotateClockwise: true,
-//         rotateSpeed: 6,
-//         orbit: true,
-//         orbitSpeed: 5,
-//         orbitDistanceFromCentre: 300
-
-        
-//     };
-//     earth = new CelestialBody(config);
-
-//     // Earth's moon
-//     config = {
-//         size: 10,
-//         colour: [255, 0, 0, darkenColourBy],
-//         startPositionInSky: 120,
-//         rotateClockwise: false,
-//         rotateSpeed: 6,
-//         orbit: false,
-//         orbitSpeed: 1,
-//         orbitDistanceFromCentre: 90,
-
-
-//         foo: true
-//     };
-//     earthsMoon = new CelestialBody(config);
-
-//     // Mars
-//     config = {
-//         size: 70,
-//         colour: [255, 0, 0, darkenColourBy],
-//         startPositionInSky: 180,
-//         rotateClockwise: false,
-//         rotateSpeed: 6,
-//         orbit: true,
-//         orbitSpeed: 1,
-//         orbitDistanceFromCentre: 600
-//     };
-// 		mars = new CelestialBody(config);
-// 		*/
-
-
-// const darkenColourBy = 200;
-// let speed;
-
-// // Sun
-// let sun;
-// const sunConfig = {
-// 	size: 200,
-//   colour: [255, 255, 0, darkenColourBy],
-//   startPositionInSky: 0,
-//   rotateClockwise: false,
-//   rotateSpeedRatio: 3,
-//   orbit: false,
-// };
-
-// // Earth
-// let earth;
-// const earthConfig = {
-// 	size: 80,
-// 	colour: [173, 216, 230, darkenColourBy],
-// 	startPositionInSky: 45,
-// 	rotateClockwise: true,
-// 	rotateSpeedRatio: 1,
-// 	orbit: true,
-// 	orbitSpeedRatio: 8,
-// 	orbitClockwise: true,
-// 	orbitDistanceFromCentre: sunConfig.size + 300,
-
-// 	moons: [
-// 		{
-// 			size: 30,
-// 			colour: [80, 80, 80, darkenColourBy],
-// 			startPositionInSky: 45,
-// 			rotateClockwise: false,
-// 			rotateSpeedRatio: 10,
-// 			orbit: true,
-// 			orbitSpeedRatio: 4,
-// 			orbitClockwise: false,
-// 			orbitDistanceFromCentre: 100,
-// 		}
-// 	]
-
-// }
-
-// function setup() {
-//     createCanvas(900, 600);
-// 		background(0);
-
-//     // Sun
-//     sun = new CelestialBody(sunConfig);
-
-//     // Earth
-//     earth = new CelestialBody(earthConfig);
-// }
-
-// function draw() {
-//     background(0);
-// 		translate(width / 2, height / 2);
-		
-// 		speed = frameCount;
-
-// 		frameRate(40)
-		
-// 		// Draw the Sun
-// 		sun.draw();
-		
-// 		// Draw the Earth
-// 		earth.draw();
-// }
-
-// class CelestialBody {
-//     constructor (config) {
-//         this.config = config;
-//         this.currentPosition = config.startPositionInSky;
-//         this.currentRotation = 0;
-// 				this.yPos = 0;
-// 				this.rotate = rotate;
-// 				this.moonCurrentPosition = [];
-//     }
-    
-//     draw (rotateFn) {
-//         // Deconstuct the props
-//         const { size,
-//                 colour,
-//                 rotate,
-//                 rotateClockwise,
-//                 rotateSpeedRatio,
-//                 orbit,
-//                 orbitClockwise,
-//                 orbitSpeedRatio,
-// 								orbitDistanceFromCentre,
-// 								moons
-//         } = this.config;
-// 				const fillColour = color(...colour); // Main colour
-
-//         // Calculate the current rotation, depending on speed
-//         if (frameCount % rotateSpeedRatio === 0) {
-//             this.currentRotation = this.currentRotation === 360 ? 0 : this.currentRotation + 1;
-//         }
-//         // Map the current rotation value
-//         let rotateAmount = map(this.currentRotation, 0, 60, 0, 360);
-//         if (!rotateClockwise) {
-//             rotateAmount = map(this.currentRotation, 0, 60, 360, 0);
-// 				}
-
-//         // Draw the shape
-// 				push();
-//         noStroke();
-//         fill(...colour);
-//         if (orbit) { // Move around orbit
-            
-//             // Calculate the current position *in the sky* value, depending on speed
-//             //if (frameCount % orbitSpeedRatio === 0) {
-//                 this.currentPosition = this.currentPosition === 360 ? 0 : this.currentPosition + 1;
-//             //}
-//             // Map the current position *in the sky* value
-//             let positionAngle = map(this.currentPosition, 0, 60, 0, 360);
-//             if (!orbitClockwise) {
-//                 positionAngle = map(this.currentPosition, 0, 60, 360, 0);
-//             }
-// 						// Rotate the canvas
-//             this.rotate(radians(positionAngle));
-//             this.yPos = 0 - orbitDistanceFromCentre / 2;
-// 						ellipse(0, this.yPos, size, size);
-						
-
-// 						// Draw any moons
-// 						if (moons && moons.length) {
-
-// 							moons.forEach((moon, index) => {
-// 								const fillColour = color(...moon.colour); // Main colour
-
-// 								this.moonCurrentPosition[index] = this.moonCurrentPosition[index] || 0;
-								
-
-// 								// Calculate the current position *in the sky* value, depending on speed
-// 								if (frameCount % moon.orbitSpeedRatio === 0) {
-// 									this.moonCurrentPosition[index] = this.moonCurrentPosition[index]  === 360 ? 0 : this.moonCurrentPosition[index]  + 1;
-// 								}
-// 								// Map the current position *in the sky* value
-// 								let positionAngle = map(this.moonCurrentPosition[index] , 0, 60, 0, 360);
-// 								if (!moon.orbitClockwise) {
-// 										positionAngle = map(this.moonCurrentPosition[index] , 0, 60, 360, 0);
-// 								}
-
-// 								push();
-// 								translate(0, this.yPos);
-// 								this.rotate(radians(positionAngle));
-// 								fill(...moon.colour);
-// 								this.moonYPos = 0 - ((size + moon.size + 20) / 2);
-// 								ellipse(0, this.moonYPos, moon.size, moon.size);
-
-// 								// Created the shaded half of the body
-// 								createShadedHalf(this.moonYPos, moon.size, rotateAmount, fillColour);
-
-// 								pop();
-// 							});
-
-// 						}
-            
-//             // Created the shaded half of the body
-//             createShadedHalf(this.yPos, size, rotateAmount, fillColour);
-
-//         } else {
-// 						// No orbit, just rotate (must be the sun)
-//             ellipse(0, this.yPos, size, size);
-//             fill(fillColour);
-//             arc(0, 0, size, size, PI + radians(rotateAmount), TWO_PI + radians(rotateAmount), OPEN);
-//         }
-// 				pop();
-				
-// 				function createShadedHalf (yPos, size, rotateAmount, fillColour) {
-// 					//return;
-// 					push();
-// 					translate(0, yPos);
-// 					fill(fillColour);
-// 					arc(0, 0, size, size, PI + radians(rotateAmount), TWO_PI + radians(rotateAmount), OPEN);
-// 					pop();
-// 				}
-
-//     }
-
-// }
-
-
-var speed;
+const orbitColor = [40, 40, 40]; // Colour of orbit path
+let speed; // Store frame count to be used as base speed throughout
+let scaleRatio = 1; // Base scale
+const buttonSize = 30; // Size of zoom button
+const buttonMargin = 6; // Margin around zoom button
+let zoomOutBtn; // Translate position for zoom out button
+let zoomInBtn; // Translate position for zoom in button
 
 function setup() {
-    createCanvas(900, 700);
+	createCanvas(900, 700);
+	
+	zoomOutBtn = [buttonMargin, height - (buttonSize + buttonMargin)];
+	zoomInBtn = [width - (buttonSize + buttonMargin), height - (buttonSize + buttonMargin)];
 }
 
 function draw() {
-    background(0);
-		speed = frameCount;
+	background(0);
+	speed = frameCount;
 
+	// Draw zoom buttons
+	drawButton(zoomOutBtn, '-');
+	drawButton(zoomInBtn, '+');
+
+	// Move 0, 0 to the centre of the canvas
+	translate(width/2, height/2);
 		
+	scale(scaleRatio);
 
-		translate(width/2, height/2);
+	// Draw the Sun
+	push();
+	celestialObj(
+		color(237, 249, 3),
+		200,
+		0,
+		0,
+		speed / 3,
+		false,
+		0
+	);
+	pop();
 
-		scale(0.5);
-
-    push();
-    
-		celestialObj(color(255,150,0), 200, 0, 0); // SUN
-		pop();
-		
-
-
-		
-
-		speed = speed / 3 % 360;
-		let rotateAmount = map(speed, 0, 60, 0, 360);
+	// Draw the Earth
+	push();
+	celestialObj(
+		color(50, 69, 252),
+		80,
+		0,
+		300,
+		speed,
+		true,
+		0
+	);
+		// Moon 1
 		push();
-		translate(0, 0);
-		rotate(radians(rotateAmount));
-
-		stroke(40);
-		//fill(0);
-		noFill();
-		ellipse(0, 0, 600, 600);
-
-		celestialObj(color(0,0,255), 80, 0, 300); // EARTH
-
-		push();
-
-		
-		translate(0, 300);
-		
-
-		speed = -speed * 2 % 360;
-		let rotateAmount2 = map(speed, 0, 60, 360, 0);
-		rotate(radians(rotateAmount2));
-		//translate(0, -50);
-		//translate(0, 60);
-
-		stroke(40);
-		//stroke(255, 0, 0);
-		//fill(0);
-		noFill();
-		ellipse(0, 0, 140, 140);
-
-		celestialObj(color(100,100,100), 30, 0, 70); // EARTH
-
+		celestialObj(
+			color(255, 255, 255),
+			30,
+			0,
+			70,
+			-speed * 2,
+			true,
+			300
+		);
 		pop();
 
-
-    pop();
+		// Moon 2
+		push();
+		celestialObj(
+			color(160, 160, 160),
+			15,
+			0,
+			100,
+			speed,
+			true,
+			300
+		);
+		pop();
+	pop();
 }
 
-function celestialObj(c, size, x, y){
-		noStroke();
-		fill(c);
-		ellipse(x, y, size, size);
-		
-		// strokeWeight(5);
-		// stroke(0);
-		// line(0, 0, size/2, 0);
+function celestialObj (color, size, x, y, speed, orbit, orbitPoint, bar) {
+
+	translate(0, orbitPoint); // Move the centre to the centre of our orbit
+	rotate(radians(speed));
+
+	// If we're orbiting
+	if (orbit) {
+		// Draw the orbit path
+		drawOrbitPath(y);
+	}
+
+	// Draw the body
+	noStroke();
+	fill(color);
+	ellipse(x, y, size, size);
+
+	// Draw the rotation line
+	strokeWeight(5);
+	stroke(0);
+	line(x, y, x, y + size / 2);
+}
+
+function drawOrbitPath (pos) {
+	push();
+	stroke(orbitColor);
+	strokeWeight(2);
+	noFill();
+	ellipse(0, 0, pos * 2, pos * 2);
+	pop();
+}
+
+function drawButton (pos, char) {
+	push();
+	translate(...pos);
+	noStroke();
+	fill(255);
+	rect(0, 0, 30, 30);
+	fill(0);
+	textAlign(CENTER);
+	textSize(30);
+	text(char, 4, 0, 30, 30);
+	pop();
+}
+
+function mousePressed () {
+	// Zoom in x position
+	const zoomInStartX = width - (buttonSize + buttonMargin);
+	const zoomInStopX = zoomInStartX + buttonSize;
+	// Zoom out x position	
+	const zoomOutStartX = buttonMargin;
+	const zoomOutStopX = zoomOutStartX + buttonSize;
+	// Zoom y position
+	const zoomStartY = height - (buttonSize + buttonMargin);
+	const zoomStopY = zoomStartY + buttonSize;
+
+	// Zoom out clicked
+	if (
+		(mouseX > zoomOutStartX && mouseX < zoomOutStopX) &&
+		(mouseY > zoomStartY && mouseY < zoomStopY)
+	) {
+		scaleRatio = scaleRatio * 0.9;
+	}
+
+	// Zoom in clicked
+	if (
+		(mouseX > zoomInStartX && mouseX < zoomInStopX) &&
+		(mouseY > zoomStartY && mouseY < zoomStopY)
+	) {
+		scaleRatio = scaleRatio * 1.1;
+	}
 }
