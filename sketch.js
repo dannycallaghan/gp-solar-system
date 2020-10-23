@@ -6,6 +6,11 @@ const buttonMargin = 6; // Margin around zoom button
 let zoomOutBtn; // Translate position for zoom out button
 let zoomInBtn; // Translate position for zoom in button
 
+/**
+ * P5 setup function
+ *
+ * @return void.
+ */
 function setup() {
 	createCanvas(900, 700);
 	
@@ -13,6 +18,11 @@ function setup() {
 	zoomInBtn = [width - (buttonSize + buttonMargin), height - (buttonSize + buttonMargin)];
 }
 
+/**
+ * P5 draw function
+ *
+ * @return void.
+ */
 function draw() {
 	background(0);
 	speed = frameCount;
@@ -56,21 +66,35 @@ function draw() {
 			color(255, 255, 255),
 			30,
 			0,
-			70,
+			86,
 			-speed * 2,
 			true,
 			300
 		);
+
+			// Asteroid around Moon 1
+			push();
+			celestialObj(
+				color(220, 20, 60),
+				10,
+				0,
+				30,
+				speed * 3,
+				true,
+				86
+			);
+			pop();
+
 		pop();
 
 		// Moon 2
 		push();
 		celestialObj(
 			color(160, 160, 160),
-			15,
+			20,
 			0,
-			100,
-			speed,
+			112,
+			-speed * 3,
 			true,
 			300
 		);
@@ -78,10 +102,23 @@ function draw() {
 	pop();
 }
 
-function celestialObj (color, size, x, y, speed, orbit, orbitPoint, bar) {
+/**
+ * Draws a celestial body (planet or moon) to the sky
+ *
+ * @param {p5 color}	color - P5 color representation of the body being drawn
+ * @param {number}	size - Diameter of the body
+ * @param {number}	x - X position of the body
+ * @param {number}	y - Y position of the body
+ * @param {number}	speed - The speed at which to orbit and/or rotate
+ * @param {boolean}	orbit - Whether the body should orbit (the sun does not)
+ * @param {number}	orbitPoint - If orbiting, orbit around this point
+ * 
+ * @return void.
+ */
+function celestialObj (color, size, x, y, speed, orbit, orbitPoint) {
 
 	translate(0, orbitPoint); // Move the centre to the centre of our orbit
-	rotate(radians(speed));
+	rotate(radians(speed)); // Rotate the canvas
 
 	// If we're orbiting
 	if (orbit) {
@@ -100,21 +137,38 @@ function celestialObj (color, size, x, y, speed, orbit, orbitPoint, bar) {
 	line(x, y, x, y + size / 2);
 }
 
-function drawOrbitPath (pos) {
+/**
+ * Draws an orbit path
+ *
+ * @param {number}	radius - The radius of the orbit
+ * 
+ * @return void.
+ */
+function drawOrbitPath (radius) {
 	push();
 	stroke(orbitColor);
 	strokeWeight(2);
 	noFill();
-	ellipse(0, 0, pos * 2, pos * 2);
+	ellipse(0, 0, radius * 2, radius * 2);
 	pop();
 }
 
+/**
+ * Draws a button for changing the scale
+ *
+ * @param {array}	pos - The x and y positions to move the canvas
+ * @param {string}	char - The character to display on the button
+ * 
+ * @return void.
+ */
 function drawButton (pos, char) {
 	push();
+	// Button
 	translate(...pos);
 	noStroke();
 	fill(255);
 	rect(0, 0, 30, 30);
+	// Text
 	fill(0);
 	textAlign(CENTER);
 	textSize(30);
@@ -122,7 +176,24 @@ function drawButton (pos, char) {
 	pop();
 }
 
+/**
+ * P5 mouse pressed event listener
+ *
+ * @return void.
+ */
 function mousePressed () {
+	handleClick(mouseX, mouseY);
+}
+
+/**
+ * Processes info from click event and passes it on
+ *
+ * @param {number}	x - The x position of the click event
+ * @param {number}	y - The y position of the click event
+ * 
+ * @return void.
+ */
+function handleClick (x, y) {
 	// Zoom in x position
 	const zoomInStartX = width - (buttonSize + buttonMargin);
 	const zoomInStopX = zoomInStartX + buttonSize;
@@ -135,17 +206,37 @@ function mousePressed () {
 
 	// Zoom out clicked
 	if (
-		(mouseX > zoomOutStartX && mouseX < zoomOutStopX) &&
-		(mouseY > zoomStartY && mouseY < zoomStopY)
+		(x > zoomOutStartX && x < zoomOutStopX) &&
+		(y > zoomStartY && y < zoomStopY)
 	) {
-		scaleRatio = scaleRatio * 0.9;
+		zoomOut();
 	}
 
 	// Zoom in clicked
 	if (
-		(mouseX > zoomInStartX && mouseX < zoomInStopX) &&
-		(mouseY > zoomStartY && mouseY < zoomStopY)
+		(x > zoomInStartX && x < zoomInStopX) &&
+		(y > zoomStartY && y < zoomStopY)
 	) {
-		scaleRatio = scaleRatio * 1.1;
+		zoomIn();
 	}
+}
+
+/**
+ * Decreases the scale of the canvas (zooms out)
+ *
+ * 
+ * @return void.
+ */
+function zoomOut () {
+	scaleRatio = scaleRatio * 0.9;
+}
+
+/**
+ * Increases the scale of the canvas (zooms in)
+ *
+ * 
+ * @return void.
+ */
+function zoomIn () {
+	scaleRatio = scaleRatio * 1.1;
 }
